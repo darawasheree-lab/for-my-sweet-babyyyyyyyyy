@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8f2637">
+<title>A little jar of love ♡</title>
+<style>
+:root{--wine:#8f2637;--red:#b64050;--rose:#e9a6a5;--cream:#fff4df;--paper:#f7e7c9;--ink:#572b2b;--tan:#d8b98d}
+*{box-sizing:border-box} body{margin:0;background:var(--cream);color:var(--ink);font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:radial-gradient(#b77b65 1px,transparent 1px);background-size:18px 18px}
+.wrap{max-width:760px;margin:auto;padding:28px 16px 50px;position:relative}
+header{text-align:center;padding:18px 10px 24px}
+.kicker{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-weight:800}
+h1{font-family:Georgia,serif;font-size:clamp(34px,8vw,54px);line-height:1.02;margin:10px 0;color:var(--wine)}
+.sub{font-size:15px;opacity:.8}
+.panel{background:#fffaf0;border:2px solid #e5c9a4;border-radius:25px;padding:22px;box-shadow:0 8px 0 #e7d2b2,0 14px 28px #6f2a2a12;margin:16px 0}
+.jar-area{text-align:center;padding:8px 0 4px}
+.jar{font-size:86px;line-height:1.3;filter:drop-shadow(0 5px 0 #edd5b5);animation:bob 2.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+h2{font-family:Georgia,serif;color:var(--wine);font-size:25px;margin:4px 0 10px}
+.note{background:var(--paper);border:1px dashed #c58b76;border-radius:18px;padding:22px 18px;min-height:120px;display:grid;place-items:center;text-align:center;font-family:Georgia,serif;font-size:20px;line-height:1.45;white-space:pre-wrap}
+button{border:0;border-radius:999px;padding:13px 20px;background:var(--wine);color:#fff8ec;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 4px 0 #5f1b2b;transition:transform .12s;margin:6px}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #5f1b2b}
+button.secondary{background:#e8c9a6;color:#572b2b;box-shadow:0 4px 0 #c69d78}
+.center{text-align:center}.tiny{font-size:12px;opacity:.7}
+.game-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.score{font-weight:900;color:var(--wine);background:#f7e7c9;padding:8px 13px;border-radius:99px}
+.arena{height:250px;position:relative;overflow:hidden;border-radius:18px;border:2px solid #e5c9a4;background:linear-gradient(#fff0d9,#f4d8bc);margin:14px 0;touch-action:manipulation}
+.arena:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#d7b38a33 1px,transparent 1px),linear-gradient(90deg,#d7b38a33 1px,transparent 1px);background-size:20px 20px}
+.heart{position:absolute;border:0;background:transparent;box-shadow:none;padding:0;margin:0;font-size:34px;line-height:1;cursor:pointer;filter:drop-shadow(2px 3px 0 #9d435033);z-index:2;animation:pop .18s ease-out}
+@keyframes pop{from{transform:scale(.5)}to{transform:scale(1)}}
+.game-message{min-height:24px;text-align:center;font-weight:700;color:var(--wine)}
+.footer{text-align:center;color:#8c5a51;font-family:Georgia,serif;font-size:18px;padding:20px 8px}
+.spark{color:var(--red)}
+@media(max-width:460px){.panel{padding:17px}.note{font-size:18px}.jar{font-size:76px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+<div class="kicker">a tiny place for a very big love</div>
+<h1>For my honey bun ♡</h1>
+<div class="sub">A little jar of love, made just for you. Open one whenever you miss me.</div>
+</header>
+
+<section class="panel jar-area">
+<div class="jar" aria-hidden="true">🫙💗</div>
+<h2>Our little love jar</h2>
+<p class="tiny">Every note is a tiny piece of my heart. Shake the jar and take one, baby.</p>
+<div class="note" id="note" aria-live="polite">“You’re my home I was searching for all my life.”</div>
+<div class="center" style="margin-top:13px">
+<button id="draw">Pick a love note ♡</button>
+<button class="secondary" id="again">Read another</button>
+</div>
+</section>
+
+<section class="panel">
+<div class="game-head"><h2>Honey bun's heart hunt</h2><div class="score">Hearts: <span id="score">0</span> / 10</div></div>
+<p style="margin:4px 0 8px">Catch 10 pixel hearts for a little surprise. Tap the hearts as they pop up!</p>
+<div class="arena" id="arena" aria-label="Heart catching game"></div>
+<div class="game-message" id="gameMessage">Ready, cutie? Press start and catch those hearts!</div>
+<div class="center"><button id="start">Start the game ♡</button><button class="secondary" id="reset">Reset</button></div>
+</section>
+
+<section class="panel center">
+<h2>One last thing, my love...</h2>
+<p style="line-height:1.6">Distance is just pixels on a screen. It could never measure how much I love you. Until I can kiss your face for real, take all these little kisses instead:</p>
+<div style="font-size:27px;letter-spacing:5px">💋 💋 💋 💋 💋</div>
+</section>
+<div class="footer">i love you more than all the pixels in this game. <span class="spark">♥</span></div>
+</main>
+<script>
+const notes = [
+"i love you so much especially on the days you're extra cute",
+"if you were here i would kiss you a hundred times a minute",
+"you'll always be my baby. i'll never get tired of your cuteness",
+"i love your voice more than my favourite song",
+"your smile warms my heart like the sun",
+"my heart loves your laugh. i could listen to you yap all day",
+"i'm addicted to your voice. your singing could cure insomnia",
+"you've made me fall so hard i hit my head on the floor",
+"maybe god took his sweet time creating you because you're too beautiful",
+"you're almost unreal to me, my honey bun",
+"my baby, my love, my cutest kiddo",
+"you're my moon and all my stars",
+"no one could ever replace you. it's you and only you",
+"my heart has a huge compartment saving all the sweet things you do for me",
+"you're my wish on every shooting star",
+"my love for you never fades. it only gets deeper",
+"my soul was meant to be with yours. are we bound for eternity?",
+"seeing you sad breaks my heart. always stay happy, my baby",
+"words could never explain what you do to me",
+"i can melt into your kisses any day",
+"losing you would feel like losing a part of me",
+"your laugh cures my pain every time",
+"i will give you everything i have, baby. you deserve all of me",
+"you're my last and forever",
+"you're so special to me. you'll always be my favourite person",
+"i love your hair, your smile, your lips. i wanna kiss everything",
+"kissing you won't even be enough. i wanna merge souls",
+"you're so warm when you say you love me. it feels like a hug",
+"my heart could explode from all the love i have for you",
+"you're not just my boyfriend. you're my soul itself",
+"i was made to love you like the air i breathe",
+"i love loving you. i love your silly little personality",
+"HOW CUTE ARE YOUUU AHHHHHH",
+"all i wanna do is kiss you until we forget what time it is",
+"the day i hug you my life will officially feel complete",
+"i wish i could kiss your voice (stole it from you hehe muah)",
+"hanging up our night calls feels like medieval torture",
+"i wanna be with you 24/7 and cling to you like a leech lmao",
+"i have so much love for you it's actually insane",
+"i'm madly, hopelessly devoted to you",
+"wish i could marry you right now",
+"come kiss me already, stupid",
+"our kids are gonna be so cute, i swear",
+"you have no idea how many times i stare at your pictures",
+"you make me fall asleep faster than anything",
+"i've never felt this comfortable with anyone",
+"you're the home i was searching for all my life",
+"i have so many plans for us. for example... marriage",
+"i can't wait to live together and see you every morning and every night",
+"if i held your hand i am NOT letting go",
+"hugging you to sleep and waking up to kiss you is number one on my bucket list",
+"i could stare into your eyes forever, not even kidding",
+"i'll keep you happy forever, baby",
+"i wanna love you like no one else can",
+"you make my heart melt every time you talk",
+"sitting with you in silence is better than any peace this world can give me",
+"my heart is so full of you. it's yours, baby",
+"every part of me is yours",
+"i fall more and more for you every day",
+"i'll never forget the day you said you love me",
+"no matter how difficult it gets, i'm right here beside you",
+"all i wanna see is my baby be happy",
+"i'm so vulnerable when it's you",
+"if you were beside me right now, i'd be covering your face in kisses",
+"you are my favourite notification, my favourite voice, my favourite everything",
+"even on ordinary days, loving you is my favourite thing to do",
+"i wish i could teleport just to steal one hug from you",
+"you're my favourite hello and my hardest goodnight",
+"one day there won't be a screen between us. just me and you",
+"until then, here's a pocket full of kisses and all my love"
+];
+let last=-1;
+function drawNote(){
+ let i; do{i=Math.floor(Math.random()*notes.length)}while(notes.length>1&&i===last);
+ last=i; document.getElementById('note').textContent='“'+notes[i]+'”';
+}
+document.getElementById('draw').addEventListener('click',drawNote);
+document.getElementById('again').addEventListener('click',drawNote);
+
+const arena=document.getElementById('arena'), scoreEl=document.getElementById('score'), msg=document.getElementById('gameMessage');
+let score=0, running=false, spawnTimer=null, moveTimer=null, hearts=[];
+function clearGame(){clearInterval(spawnTimer);clearInterval(moveTimer);running=false;hearts.forEach(h=>h.remove());hearts=[];}
+function updateScore(){scoreEl.textContent=score;}
+function spawnHeart(){
+ if(!running)return;
+ const h=document.createElement('button');h.className='heart';h.type='button';h.textContent=['💗','💖','💕','❤️'][Math.floor(Math.random()*4)];
+ const maxX=Math.max(0,arena.clientWidth-45), maxY=Math.max(0,arena.clientHeight-48);
+ h.style.left=Math.floor(Math.random()*maxX)+'px';h.style.top=Math.floor(Math.random()*maxY)+'px';
+ h.setAttribute('aria-label','Catch heart');
+ h.addEventListener('click',()=>{
+   if(!running)return; score++;updateScore();h.remove();hearts=hearts.filter(x=>x!==h);
+   if(score>=10){clearGame();msg.textContent='YOU DID IT, HONEY BUN!! Your prize: i love you more than all the pixels in this game. ♡';document.getElementById('start').textContent='Play again ♡';}
+ });
+ arena.appendChild(h);hearts.push(h);
+ if(hearts.length>7){const old=hearts.shift();old.remove();}
+}
+function startGame(){
+ clearGame();score=0;updateScore();msg.textContent='Catch the hearts, my love!!';running=true;
+ document.getElementById('start').textContent='Game in progress…';
+ spawnHeart();spawnTimer=setInterval(spawnHeart,750);
+ moveTimer=setInterval(()=>{hearts.forEach(h=>{if(!h.isConnected)return;const x=Math.random()*Math.max(0,arena.clientWidth-45),y=Math.random()*Math.max(0,arena.clientHeight-48);h.style.left=x+'px';h.style.top=y+'px';});},1100);
+}
+document.getElementById('start').addEventListener('click',startGame);
+document.getElementById('reset').addEventListener('click',()=>{clearGame();score=0;updateScore();msg.textContent='Ready, cutie? Press start and catch those hearts!';document.getElementById('start').textContent='Start the game ♡';});
+</script>
+</body>
+</html>
